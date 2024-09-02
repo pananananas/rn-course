@@ -1,14 +1,10 @@
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Stack, SplashScreen } from "expo-router";
+
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
 import "react-native-reanimated";
 import "../global.css";
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -35,11 +31,9 @@ export default function RootLayout() {
   if (!fontsLoaded && !error) return null;
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="+not-found" />
+    </Stack>
   );
 }
