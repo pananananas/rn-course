@@ -91,20 +91,24 @@ export const signIn = async (email: string, password: string) => {
 };
 
 export const getCurrentUser = async () => {
-  try {
-    const currentAccount = await account.get();
-
-    if (!currentAccount) throw Error;
-    const currentUser = await databases.listDocuments(
-      config.databaseId,
-      config.userCollectionId,
-      [Query.equal("accountId", currentAccount.$id)]
-    );
-    if (!currentUser) throw Error;
-
-    return currentUser.documents[0];
-  } catch (error) {
-    console.log(error);
-    throw new Error(String(error));
-  }
-};
+    try {
+      const currentAccount = await account.get();
+      if (!currentAccount) throw Error;
+  
+      // const currentUser = await databases.listDocuments(
+      //   config.databaseId,
+      //   config.userCollectionId,
+      //   [Query.equal("accountId", currentAccount.$id)]
+      // );
+  
+      // if (!currentUser) throw Error;
+  
+      // return currentUser.documents[0];
+  
+      return currentAccount;
+    } catch (error) {
+      throw new Error(String(error));
+    }
+  };
+  
+  
