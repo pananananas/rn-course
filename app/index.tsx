@@ -1,5 +1,4 @@
-import { View, Text, ScrollView, Image } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View, Text, ScrollView, Image, SafeAreaView } from "react-native";
 import { images } from "../constants";
 import CustomButton from "@/components/CustomButton";
 import { StatusBar } from "expo-status-bar";
@@ -12,7 +11,7 @@ export default function App() {
   if (!isLoading && isLogged) return <Redirect href="/home" />;
 
   return (
-    <View className="bg-primary h-full">
+    <SafeAreaView className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="w-full justify-center items-center min-h-[85vh] px-4">
           <Image
@@ -47,6 +46,6 @@ export default function App() {
         </View>
       </ScrollView>
       <StatusBar backgroundColor="#161622" style="light" />
-    </View>
+    </SafeAreaView>
   );
 }
