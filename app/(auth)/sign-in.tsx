@@ -1,10 +1,11 @@
-import { View, Text, SafeAreaView, Image } from "react-native";
+import { View, Text, SafeAreaView, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import { images } from "../../constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
-import { Link } from "expo-router";
+import { signIn } from "@/lib/appwrite";
+import { Link, router } from "expo-router";
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -14,12 +15,25 @@ const SignIn = () => {
 
   const [isSubmitting, setisSubmitting] = useState(false);
 
-  const submit = () => {};
+  const submit = async () => {
+    if (!form.email || !form.password) {
+      Alert.alert("Error", "Please fill all fields");
+    }
+    setisSubmitting(true);
+    try {
+      await signIn(form.email, form.password);
+      router.replace("/home");
+    } catch (error: any) {
+      Alert.alert("Error", String(error.message));
+    } finally {
+      setisSubmitting(false);
+    }
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <ScrollView>
-        <View className=" justify-center w-full min-h-[85vh] my-6 px-4">
+        <View className=" justify-center w-full wh-full my-6 px-4">
           <Image
             source={images.logo}
             resizeMode="contain"
@@ -58,17 +72,17 @@ const SignIn = () => {
             handlePress={submit}
             containerStyles="mt-7 px-6"
             isLoading={isSubmitting}
+            textStyles={""}
           />
           <View className="flex-row items-center justify-center mt-6">
             <Text className="text-gray-100 text-base">
-              Don't have an account? {   }
+              Don't have an account? {}
             </Text>
             <Link href="/sign-up">
               <Text className="text-secondary text-base font-psemibold ml-1">
                 Sign up
               </Text>
             </Link>
-
           </View>
         </View>
       </ScrollView>
