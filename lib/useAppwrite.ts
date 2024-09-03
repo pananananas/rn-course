@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-const useAppwrite = (fn: () => any) => {
+const useAppwrite = (fn: () => Promise<any>) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const fetchData = async () => {
@@ -18,7 +18,7 @@ const useAppwrite = (fn: () => any) => {
 
   useEffect(() => {
     fetchData();
-  });
+  }, [fn]); // Add dependency array to prevent infinite loop
 
   const refetch = () => fetchData();
 

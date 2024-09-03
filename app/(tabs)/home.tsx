@@ -1,7 +1,8 @@
+import { getAllPosts, getLatestPosts } from "@/lib/appwrite";
 import SearchInput from "@/components/SearchInput";
 import EmptyState from "@/components/EmptyState";
+import VideoCard from "@/components/VideoCard";
 import Trending from "@/components/Trending";
-import { getAllPosts } from "@/lib/appwrite";
 import useAppwrite from "@/lib/useAppwrite";
 import { StatusBar } from "expo-status-bar";
 import { images } from "@/constants";
@@ -14,10 +15,10 @@ import {
   Image,
   RefreshControl,
 } from "react-native";
-import VideoCard from "@/components/VideoCard";
 
 const Home = () => {
   const { data: posts, refetch } = useAppwrite(getAllPosts);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
@@ -32,10 +33,8 @@ const Home = () => {
         <FlatList
           data={posts}
           // data={[]}
-          keyExtractor={(item) => item.$id}
-          renderItem={({ item }) => (
-            <VideoCard video = {item} />
-          )}
+          keyExtractor={(item: { $id: string }) => item.$id}
+          renderItem={({ item }) => <VideoCard video={item} />}
           ListHeaderComponent={() => (
             <View className="my-6 px-4 space-y-6">
               <View className="justify-between items-start flex-row mb-6">
@@ -55,12 +54,20 @@ const Home = () => {
                   />
                 </View>
               </View>
-              <SearchInput placeholder="Search for a video" />
+              <SearchInput
+                placeholder="Search for a video"
+                title={""}
+                value={""}
+                handleChangeText={function (text: string): void {
+                  throw new Error("Function not implemented.");
+                }}
+                otherStyles={""}
+              />
               <View className="w-full flex-1 pt-5 pb-8">
                 <Text className="text-gray-100 text-lg fint-pregular mb-3">
                   Latest videos
                 </Text>
-                <Trending posts={[{ id: 1 }, { id: 2 }, { id: 3 }]} />
+                <Trending posts={latestPosts} />
               </View>
             </View>
           )}
