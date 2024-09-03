@@ -6,6 +6,7 @@ import { createUser } from "@/lib/appwrite";
 import React, { useState } from "react";
 import { images } from "@/constants";
 import { Link, router } from "expo-router";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -15,6 +16,7 @@ const SignUp = () => {
   });
 
   const [isSubmitting, setisSubmitting] = useState(false);
+  const { setUser, setIsLogged } = useGlobalContext();
 
   const submit = async () => {
     if (!form.email || !form.password || !form.username) {
@@ -23,6 +25,9 @@ const SignUp = () => {
     setisSubmitting(true);
     try {
       const result = await createUser(form.email, form.password, form.username);
+      setUser(result);
+      setIsLogged(true);
+
       router.replace("/home");
     } catch (error: any) {
       Alert.alert("Error", String(error.message));

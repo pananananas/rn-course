@@ -4,8 +4,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { images } from "../../constants";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
-import { signIn } from "@/lib/appwrite";
+import { getCurrentUser, signIn } from "@/lib/appwrite";
 import { Link, router } from "expo-router";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const SignIn = () => {
   const [form, setForm] = useState({
@@ -14,6 +15,7 @@ const SignIn = () => {
   });
 
   const [isSubmitting, setisSubmitting] = useState(false);
+  const { setUser, setIsLogged } = useGlobalContext();
 
   const submit = async () => {
     if (!form.email || !form.password) {
@@ -22,6 +24,10 @@ const SignIn = () => {
     setisSubmitting(true);
     try {
       await signIn(form.email, form.password);
+      const result = await getCurrentUser();
+      setUser(result);
+      setIsLogged(true);
+
       router.replace("/home");
     } catch (error: any) {
       Alert.alert("Error", String(error.message));

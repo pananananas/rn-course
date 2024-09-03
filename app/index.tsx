@@ -4,8 +4,14 @@ import { images } from "../constants";
 import CustomButton from "@/components/CustomButton";
 import { StatusBar } from "expo-status-bar";
 import { Redirect, router } from "expo-router";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 export default function App() {
+  const { isLoading, isLogged } = useGlobalContext();
+
+console.log("isLoading = ", isLoading, "isLogged = ", isLogged);
+  if (!isLoading && isLogged) return <Redirect href="/home" />;
+
   return (
     <View className="bg-primary h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
@@ -23,7 +29,7 @@ export default function App() {
 
           <View className="relatice mt-5">
             <Text className="text-white text-center font-bold text-3xl">
-              Discover Endless Possibilities with{" "}
+              Discover Endless {"  "}Possibilities with{" "}
               <Text className="text-secondary-200">Aora</Text>
             </Text>
             <Image
@@ -34,7 +40,9 @@ export default function App() {
           </View>
           <CustomButton
             title="Continue with Emial"
-            handlePress={() => {router.push('/sign-in')}}
+            handlePress={() => {
+              router.push("/sign-in");
+            }}
             containerStyles="w-full mt-7"
           />
         </View>
