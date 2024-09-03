@@ -25,6 +25,8 @@ const EmptyState = ({
         title="Create video"
         containerStyles="w-full my-5"
         handlePress={() => router.push("/create")}
+        textStyles={""}
+        isLoading={false}
       />
     </View>
   );
