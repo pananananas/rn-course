@@ -127,7 +127,7 @@ export const getLatestPosts = async () => {
   try {
     const posts = await databases.listDocuments(
       config.databaseId,
-      config.videoCollectionId,
+      config.videoCollectionId
       // [Query.orderDesc("$createdAt"), Query.limit(7)]
     );
     return posts.documents;
@@ -144,6 +144,28 @@ export const searchPosts = async (query: string) => {
       [Query.search("title", query)]
     );
     return posts.documents;
+  } catch (error) {
+    throw new Error(String(error));
+  }
+};
+
+export const getUserPosts = async (userId: string) => {
+  try {
+    const posts = await databases.listDocuments(
+      config.databaseId,
+      config.videoCollectionId,
+      [Query.equal("users", userId)]
+    );
+    return posts.documents;
+  } catch (error) {
+    throw new Error(String(error));
+  }
+};
+
+export const signOut = async () => {
+  try {
+    const session = await account.deleteSession("current");
+    return session;
   } catch (error) {
     throw new Error(String(error));
   }

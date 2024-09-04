@@ -1,4 +1,5 @@
 import { getAllPosts, getLatestPosts } from "@/lib/appwrite";
+import { useGlobalContext } from "@/context/GlobalProvider";
 import SearchInput from "@/components/SearchInput";
 import EmptyState from "@/components/EmptyState";
 import VideoCard from "@/components/VideoCard";
@@ -17,6 +18,7 @@ import {
 } from "react-native";
 
 const Home = () => {
+  const { user, setUser, setIsLogged } = useGlobalContext();
   const { data: posts, refetch } = useAppwrite(getAllPosts);
   const { data: latestPosts } = useAppwrite(getLatestPosts);
 
@@ -43,7 +45,7 @@ const Home = () => {
                     Welcome back
                   </Text>
                   <Text className="text-2xl font-psemibold text-white">
-                    Username
+                    {user?.name}
                   </Text>
                 </View>
                 <View className="mt-1.5">
